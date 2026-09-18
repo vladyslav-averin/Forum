@@ -5,7 +5,37 @@ namespace InMemoryRepositories;
 
 public class CommentInMemoryRepository : ICommentRepository
 {
-    private readonly List<Comment> comments = new();
+    private readonly List<Comment> comments = new()
+    {
+        new Comment
+        {
+            Id = 1,
+            Body = "Thanks for creating this forum!",
+            UserId = 2,
+            PostId = 1
+        },
+        new Comment
+        {
+            Id = 2,
+            Body = "Glad to have you here.",
+            UserId = 1,
+            PostId = 1
+        },
+        new Comment
+        {
+            Id = 3,
+            Body = "Async and await became clearer after practice.",
+            UserId = 3,
+            PostId = 2
+        },
+        new Comment
+        {
+            Id = 4,
+            Body = "I like LINQ and its readable queries.",
+            UserId = 1,
+            PostId = 3
+        }
+    };
 
     public Task<Comment> AddAsync(Comment comment)
     {
