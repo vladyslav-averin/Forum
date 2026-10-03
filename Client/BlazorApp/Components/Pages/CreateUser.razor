@@ -1,0 +1,61 @@
+@page "/create-user"
+@using ApiContracts
+@using BlazorApp.Services
+@inject IUserService UserService
+
+<PageTitle>Create user</PageTitle>
+
+<h1>Create user</h1>
+
+<div class="mb-3">
+    <label for="userName" class="form-label">User name</label>
+    <input id="userName" class="form-control" @bind="userName" />
+</div>
+
+<div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input id="password" type="password" class="form-control" @bind="password" />
+</div>
+
+<button class="btn btn-primary" @onclick="CreateUserAsync">Create user</button>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <p class="text-success">@message</p>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <p class="text-danger">@errorMessage</p>
+}
+
+@code {
+    private string userName = "";
+    private string password = "";
+    private string message = "";
+    private string errorMessage = "";
+
+    private async Task CreateUserAsync()
+    {
+        message = "";
+        errorMessage = "";
+
+        try
+        {
+            CreateUserDto request = new()
+            {
+                UserName = userName,
+                Password = password
+            };
+
+            UserDto user = await UserService.AddUserAsync(request);
+            message = $"User {user.UserName} created with ID {user.Id}.";
+            userName = "";
+            password = "";
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+}
